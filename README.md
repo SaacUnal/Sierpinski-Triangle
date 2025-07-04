@@ -15,6 +15,7 @@ This data structure consists in triangles that are conected betwen their vertice
 After the level 0, each level have 3^n universes maximum.
 
 This is how the basic triangle works:
+
 ![image](https://github.com/user-attachments/assets/0843d112-bd0c-489a-9ced-d43c17bf9f70)
 
 And this is how a compound triangle works:
