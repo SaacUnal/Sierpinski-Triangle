@@ -19,7 +19,7 @@ This is how the basic triangle works:
 ![image](https://github.com/user-attachments/assets/0843d112-bd0c-489a-9ced-d43c17bf9f70)
 
 And this is how a compound triangle works:
-![image](https://github.com/user-attachments/assets/fe2720aa-5605-4a39-b917-0fd950d223e5)
+![image](https://github.com/user-attachments/assets/56039b75-92d3-443a-9287-7a8bd3d71ef1)
 
 # Aplication
 Now in the code 
