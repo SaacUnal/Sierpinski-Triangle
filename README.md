@@ -10,8 +10,9 @@ This is going to be called a multiverse, the idea is to make posible to travel b
 
 # Sierpinski Triangle
 We propose a data structure that reassembles a Sierpinski triangle, an example of a fractal.
-This data structure consists in triangles that are conected between their vertices, and levels that are conected by one vertex of the triangle after the level 3:
-(0 has 3 conections, 1 has 3 conections, 2 has 2 conections and after 3 it has 1 conection except the corner triangles that has 2 conections).
+This data structure consists in triangles that are conected between their vertices, and levels that are conected by a certain number of vertices of the triangle:
+level 0 and 1 have 3 conections, level 2 has 2 conections and after level 3 each triangle has 1 conection except the corner triangles that have 2.
+(level 0 and 1 behave the same)
 After the level 0, each level has 3^n universes maximum.
 
 This is how the basic triangle works:
