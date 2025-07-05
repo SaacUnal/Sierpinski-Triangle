@@ -18,14 +18,18 @@ This is how the basic triangle works:
 
 ![image](https://github.com/user-attachments/assets/0843d112-bd0c-489a-9ced-d43c17bf9f70)
 
-And this is how a compound triangle works (1 is the level 0, 2 is the level 1 and so on):
-![image](https://github.com/user-attachments/assets/56039b75-92d3-443a-9287-7a8bd3d71ef1)
+And this is how a compound triangle works:
+![image](https://github.com/user-attachments/assets/2c27a213-5ea2-4967-83e9-d83d093b0676)
+
 
 # Aplication
-Now in the code 
+Now in the code.
 - There is a tail: the first universe of the level 0 and a head: the universe number 3*2^n-1 of the last universe.
 - The multiverse has two options to create: a complete triangle with 3 vertices or a triangle with one vertex or just one universe.
 - The delete options are the same: delete a complete triangle or delete one vertex.
-- The
+- The order of the data flow is clockwise.
+- Each universe 
+- Since the first universe until the universe number 3*2^n-1 of each level (except 0), it has a conection with another level.
+- 
 
 
