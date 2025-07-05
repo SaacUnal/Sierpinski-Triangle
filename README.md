@@ -21,7 +21,8 @@ This is how the basic triangle works:
 ![image](https://github.com/user-attachments/assets/0843d112-bd0c-489a-9ced-d43c17bf9f70)
 
 And this is how a compound triangle works:
-![image](https://github.com/user-attachments/assets/f618aaf0-5b70-40e5-9151-2fe0445e7de6)
+![image](https://github.com/user-attachments/assets/0656532c-09d3-45d6-a56e-b53bbb960e5a)
+
 
 # Aplication
 - The order of the data flow is clockwise.
@@ -29,7 +30,12 @@ And this is how a compound triangle works:
 - The universes of the level 0 are not directly connected but we save their position to divide the data structure in 3 parts: from tail to first third, from first third to second third and from second thirdo to head.
 - Each universe has a direct conection with another universe of the same level, and aditional can has a direct conection with a universe of another level.
 - The multiverse has two options to create: a complete triangle with 3 vertices or a triangle with one vertex (just one universe).
+- When a triangle is added: it is created between 2 universes that dont belong to the same level of the triangle. If there are 3^n-1 triangles created, it starts a new level.
+- When a universe is added: it tries to fullfill a triangle first, if the triangles are all full, it creates another triangle.
 - The delete options are the same: delete a complete triangle or delete one vertex.
-- 
+
+These are the conections:
+![image](https://github.com/user-attachments/assets/7bb99066-a484-4f02-8012-b52f05ce7f9c)
+
 
 
