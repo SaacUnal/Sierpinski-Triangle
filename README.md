@@ -13,6 +13,7 @@ We propose a data structure that reassembles a Sierpinski triangle, an example o
 This data structure consists in triangles that are conected between their vertices, and levels that are conected by a certain number of vertices of the triangle:
 
 level 0 and 1 have 3 conections, level 2 has 2 conections and after level 3 each triangle has 1 conection except the corner triangles that have 2. Level 0 and 1 behave almost the same.
+
 After the level 0, each level has 3^n universes maximum.
 
 This is how the basic triangle works:
