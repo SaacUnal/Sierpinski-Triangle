@@ -82,7 +82,7 @@ def draw_sierpinski_comp(ax, x, y, size, depth, triangulos, idx_tracker):
         draw_sierpinski_comp(ax, x + half / 2, y + height, half, depth - 1, triangulos, idx_tracker)
         draw_sierpinski_comp(ax, x + half, y, half, depth - 1, triangulos, idx_tracker)
 
-# === USO
+
 s = Sierpinski()
 s.insertar_siguiente()
 s.insertar_siguiente()
