@@ -1,8 +1,8 @@
-public class Sierpinski {
+public class SierpinskiDetallado {
     private Triangulo head;
     private Triangulo tail;
     
-    public Sierpinski(int valor_1, int valor_2, int valor_3){
+    public SierpinskiDetallado(int valor_1, int valor_2, int valor_3){
         Triangulo triangulo_base = new Triangulo(0,0, valor_1);
         this.head = triangulo_base;
         this.tail = triangulo_base;
@@ -57,7 +57,9 @@ public class Sierpinski {
         this.tail.getTercero().setSiguienteTriangulo(triangulo_actual.getTercero());
     }
 
-    public void conexionesTriangulosNivel2(Triangulo triangulo){
+    public void conexionesTriangulosNivel2(Triangulo 
+    
+    triangulo){
         int numero = triangulo.getNumero();
         switch(numero){
             case 0: this.esquina1(triangulo);
@@ -161,19 +163,17 @@ public class Sierpinski {
 
     // INSERTAR VERTICE---------------------------------------------------------------------------
     public void insertarVertice(int valor){
-        boolean op = true;
+        boolean op = true; // Sin usar ni un break como me aconseja el papu Jonathan.
         Triangulo triangulo_actual = this.tail;
         while(op == true){
-            if(triangulo_actual.getTercero().getValor() == 0){
-                if(triangulo_actual.getSegundo().getValor() == 0){
-                    triangulo_actual.getSegundo().setValor(valor);
+            if(triangulo_actual.getTercero() == null){
+                if(triangulo_actual.getSegundo() == null){
+                    triangulo_actual.setSegundo(new Vertice(valor));
                     op = false;
-                    break;
                 }
                 else{
-                    triangulo_actual.getTercero().setValor(valor);
+                    triangulo_actual.setTercero(new Vertice(valor));
                     op = false;
-                    break;
                 }
             }   
 
@@ -183,8 +183,7 @@ public class Sierpinski {
             else{
                 // Si todos los triangulos estan llenos se crea uno nuevo.
                 this.insertarTriangulo(valor);
-                op = false;
-                break;  
+                op = false;  
             } 
         }
     }
@@ -201,28 +200,21 @@ public class Sierpinski {
         System.out.println("No existe ese triangulo. ");
         return this.head;       
         }
-
-    public Vertice verticeBusqueda(int valor){
-        Vertice triangulo_actual = this.tail.getPrimero();
-        Vertice vertice_actual =  triangulo_actual;
-        boolean op = true;
-        while(op == true){
-            for (int i = 0; i <= 3; i++){
-                if(vertice_actual.getValor() == valor){
+    /* 
+    public VerticeBusqueda(int valor){
+        triangulo_actual = this.base;
+        vertice_actual =  this.base.primero;
+        while(op == True){
+            for (int i = 0; i < 3; i++){
+                if(vertice_actual.valor == valor){
                     return vertice_actual;
                 }
-                vertice_actual = vertice_actual.getSiguienteVertice();
+                vertice_actual = vertice_actual.siguiente_vertice;
             }  
-            if(triangulo_actual.getSiguienteTriangulo() != null){
-                triangulo_actual = triangulo_actual.getSiguienteTriangulo();
-            }
-            else{
-                op = false;  
-            } 
+            triangulo_actual = vertice_actual.siguiente_triangulo;
         }
-        System.out.println("No existe ese vertice. ");
-        return vertice_actual;  
     }
+    */
 
     // VISUALIZAR (por mientras) ---------------------------------------------------
     public void visualizar(){

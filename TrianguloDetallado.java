@@ -1,18 +1,18 @@
-public class Triangulo {
+public class TrianguloDetallado {
     private int nivel;
     private int numero;
-    private Triangulo siguiente;
+    private TrianguloDetallado siguiente;
     private Vertice primero;
     private Vertice segundo;
     private Vertice tercero;
     
-    public Triangulo(int nivel, int numero, int valor) {
+    public TrianguloDetallado(int nivel, int numero, int valor) {
         // Inicializar
         this.nivel = nivel;
         this.numero = numero;
         this.primero = new Vertice(valor);
-        this.segundo = new Vertice(0);
-        this.tercero = new Vertice(0);
+        this.segundo = null;
+        this.tercero = null;
         this.siguiente = null;
     }
     
@@ -37,7 +37,7 @@ public class Triangulo {
         return tercero;
     }
 
-    public Triangulo getSiguiente(){
+    public TrianguloDetallado getSiguiente(){
         return siguiente;
     }
 
@@ -65,7 +65,7 @@ public class Triangulo {
         tercero.setSiguienteVertice(primero);
     }
 
-    public void setSiguiente(Triangulo siguiente){
+    public void setSiguiente(TrianguloDetallado siguiente){
         this.siguiente = siguiente;
     }
 
