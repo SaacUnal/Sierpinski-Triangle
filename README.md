@@ -28,7 +28,7 @@ Data:
 - There is a tail: The level 0 and a head: the last universe of the last level. The head is conected to the tail.
 - The triangles are divided in (First corner, first edge, apex, second edge, second corner, base and inner).
 
-<img width="2661" height="421" alt="image" src="https://github.com/user-attachments/assets/cb3a5eb4-24e0-45a1-a3d8-4c4bad4bf332" />
+<img width="1777" height="509" alt="image" src="https://github.com/user-attachments/assets/a1d9da25-e0e2-4870-9b61-6d70926b245b" />
 
 Conections:
 - Each universe has a direct conection with the next universe of the same level, and 3 conections between their vertices.
