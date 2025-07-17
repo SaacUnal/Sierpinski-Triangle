@@ -18,7 +18,6 @@ class Triangulo:
         self.segundo = Vertice(vertice_inicial + 2)
         self.nivel = nivel
 
-        # Conectar los vértices internamente
         self.cabeza.siguiente_i = self.primero
         self.primero.siguiente_i = self.segundo
         self.segundo.siguiente_i = self.cabeza
@@ -38,7 +37,6 @@ class Sierpinski:
         for _ in range(0, cantidad, 3):
             T1 = Triangulo(self.subdivisiones, self.vertice_id_counter)
             self.vertice_id_counter += 3
-            # Conectar nuevos vértices con los anteriores (siguiente_p)
             T1.cabeza.siguiente_p = self.base.cabeza.siguiente_i
             self.base.cabeza.siguiente_i = T1.cabeza
             T1.primero.siguiente_p = self.base.primero.siguiente_i
@@ -50,17 +48,11 @@ class Sierpinski:
 
     def eliminar_ultimo(self):
         if self.subdivisiones > 1:
-            # Calcular cuántos triángulos se agregaron en el último nivel
-            # Para subdivisiones=1: se agrega 1 triángulo
-            # Para subdivisiones=2: se agregan 3 triángulos  
-            # Para subdivisiones=3: se agregan 9 triángulos
-            # Patrón: 3^(subdivisiones-1) / 3 = 3^(subdivisiones-2) para subdivisiones > 1
             if self.subdivisiones == 2:
-                triangulos_a_eliminar = 1  # Primer nivel agregó 1 triángulo
+                triangulos_a_eliminar = 1  
             else:
                 triangulos_a_eliminar = 3 ** (self.subdivisiones - 2)
             
-            # Eliminar esa cantidad de triángulos del final
             for _ in range(triangulos_a_eliminar):
                 if len(self.triangulos) > 1:
                     self.triangulos.pop()
@@ -77,7 +69,7 @@ class Sierpinski:
             self.eliminar_ultimo()
 
     def total_triangulos(self):
-        return len(self.triangulos) - 1  # Excluir el triángulo base
+        return len(self.triangulos) - 1  
     
     def nivel_actual(self):
         return self.subdivisiones - 1
@@ -131,12 +123,12 @@ def draw_sierpinski_comp(ax, x, y, size, depth, triangulos, idx_tracker):
 
 # Crear el multiverso
 s = Sierpinski()
-niveles_totales = 0  # Variable para recordar los niveles creados
+niveles_totales = 0 
 
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-cls()  # Limpiar la consola (opcional, para una mejor visualización)
+cls()  # Limpiar la consola 
 print("\n=== MULTIVERSO SIERPINSKI ===")
 print("\nEstado inicial: 0 niveles creados")
 
