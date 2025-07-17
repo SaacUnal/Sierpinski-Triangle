@@ -14,6 +14,9 @@ public class Triangulo {
         this.segundo = new Vertice(0);
         this.tercero = new Vertice(0);
         this.siguiente = null;
+        this.primero.setSiguienteVertice(segundo);
+        this.segundo.setSiguienteVertice(tercero);
+        this.tercero.setSiguienteVertice(primero);
     }
     
     // Getters
@@ -56,13 +59,10 @@ public class Triangulo {
 
     public void setSegundo(Vertice segundo) {
         this.segundo = segundo;
-        primero.setSiguienteVertice(segundo);
     }
 
     public void setTercero(Vertice tercero) {
         this.tercero = tercero;
-        segundo.setSiguienteVertice(tercero);
-        tercero.setSiguienteVertice(primero);
     }
 
     public void setSiguiente(Triangulo siguiente){

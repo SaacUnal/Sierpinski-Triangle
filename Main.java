@@ -16,9 +16,9 @@ public class Main{
         // Insertar triangulos.
         sierpinski.insertarTriangulo(67);
         for(int i = 0; i <= 10; i++){
-            sierpinski.insertarTriangulo(numero_random.nextInt(1, 100));    
+            sierpinski.insertarTriangulo(numero_random.nextInt(1, 100));  
         }
-        sierpinski.insertarTriangulo(67);
+        sierpinski.insertarTriangulo(99);
         sierpinski.visualizar();
         System.out.println(' ');
 
@@ -31,8 +31,8 @@ public class Main{
         System.out.println(' ');
 
         // Busqueda, aqui es donde se detalla la forma
-        //sierpinski.busqueda();
-        sierpinski.visualizar();
+        Vertice vertice_encontrado = sierpinski.busquedaVertice(numero_random.nextInt(1, 100));
+        System.out.println(vertice_encontrado.getValor());
         System.out.println(' ');
 
     }

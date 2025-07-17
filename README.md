@@ -14,7 +14,7 @@ This data structure consists in triangles that are conected between their vertic
 
 level 0 and 1 have 3 conections, level 2 has 2 conections and after level 3 each triangle has 1 conection except the corner triangles that have 2. Level 0 and 1 behave almost the same.
 
-After the level 0, each level has 3^n universes maximum.
+After the level 1, each level has 3^n-1 universes maximum.
 
 This is how the basic triangle works:
 
@@ -26,13 +26,11 @@ And this is how a compound triangle works:
 
 # Aplication
 - The order of the data flow is clockwise.
-- There is a tail: the first universe of the level 0 and a head: the third universe of the last level. The head is conected to the tail.
-- The universes of the level 0 are not directly connected but we save their position to divide the data structure in 3 parts: from tail to first third, from first third to second third and from second thirdo to head.
-- Each universe has a direct conection with another universe of the same level, and aditional can has a direct conection with a universe of another level.
-- The multiverse has two options to create: a complete triangle with 3 vertices or a triangle with one vertex (just one universe).
-- When a triangle is added: it is created between 2 universes that dont belong to the same level of the triangle. If there are 3^n-1 triangles created, it starts a new level.
-- When a universe is added: it tries to fullfill a triangle first, if the triangles are all full, it creates another triangle.
-- The delete options are the same: delete a complete triangle or delete one vertex.
+- There is a tail: The level 0 and a head: the last universe of the last level. The head is conected to the tail.
+- Each universe has a direct conection with the next universe of the same level, and aditional can has a direct conection with a universe of another level.
+- The multiverse can create a complete triangle with 3 vertices but only the first has a value, the rest are empty.
+- When a triangle is added: The conections between itself and the conections in the big triangle are fixed. If the level of the triangle is greater than 3^n
+- When a vertex is added: It tries to fullfill a triangle first, if all triangles are all full, it creates another triangle.
 
 These are the conections:
 ![image](https://github.com/user-attachments/assets/7bb99066-a484-4f02-8012-b52f05ce7f9c)

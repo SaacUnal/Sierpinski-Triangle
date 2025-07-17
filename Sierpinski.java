@@ -6,19 +6,17 @@ public class Sierpinski {
         Triangulo triangulo_base = new Triangulo(0,0, valor_1);
         this.head = triangulo_base;
         this.tail = triangulo_base;
+        this.head.setSiguiente(this.tail);
         this.insertarVertice(valor_2);
         this.insertarVertice(valor_3);
     }
 
     // INSERTAR TRIANGULO ----------------------------------------------------------------------------------------
     public void insertarTriangulo(int valor){
-        int datos[] = this.trianguloPosible();
+        int datos[] = this.posibleTriangulo();
         int nivel = datos[0], numero = datos[1];
         Triangulo triangulo_nuevo = new Triangulo (nivel, numero, valor);
-
-        // Conexion entre triangulos
         this.head.setSiguiente(triangulo_nuevo);
-        this.head = triangulo_nuevo;
 
         // Conexiones entre vertices
         switch(nivel){
@@ -32,14 +30,16 @@ public class Sierpinski {
             default: this.conexionesTriangulos();
             break;
         }  
+        this.head = triangulo_nuevo;
+        this.head.setSiguiente(this.tail);
     }
 
-    public int[] trianguloPosible(){
+    public int[] posibleTriangulo(){
         // Se añade otro nivel si se alcanzo el limite
         Triangulo triangulo_ultimo = this.head;
         int nivel_ultimo = triangulo_ultimo.getNivel();
         int numero_ultimo = triangulo_ultimo.getNumero();
-        if(((numero_ultimo + 1) < (int) Math.pow(3, nivel_ultimo)) && (nivel_ultimo > 0)){
+        if(((numero_ultimo + 1) < (int)Math.pow(3, nivel_ultimo - 1)) && (nivel_ultimo > 0)){
             int datos[] = {nivel_ultimo, numero_ultimo+1};
             return datos;
         }
@@ -49,12 +49,12 @@ public class Sierpinski {
 
     // CONEXIONES -------------------------------
     public void conexionesTriangulosNivel1(Triangulo triangulo_actual){
-        triangulo_actual.getPrimero().setSiguienteTriangulo(this.tail.getSegundo());
-        triangulo_actual.getSegundo().setSiguienteTriangulo(this.tail.getTercero());
-        triangulo_actual.getTercero().setSiguienteTriangulo(this.tail.getPrimero());
         this.tail.getPrimero().setSiguienteTriangulo(triangulo_actual.getPrimero());
+        triangulo_actual.getPrimero().setSiguienteTriangulo(this.tail.getSegundo());
         this.tail.getSegundo().setSiguienteTriangulo(triangulo_actual.getSegundo());
+        triangulo_actual.getSegundo().setSiguienteTriangulo(this.tail.getTercero());
         this.tail.getTercero().setSiguienteTriangulo(triangulo_actual.getTercero());
+        triangulo_actual.getTercero().setSiguienteTriangulo(this.tail.getPrimero());  
     }
 
     public void conexionesTriangulosNivel2(Triangulo triangulo){
@@ -72,23 +72,23 @@ public class Sierpinski {
     public void conexionesTriangulosNivel3(Triangulo triangulo){
         int numero = triangulo.getNumero();
         int nivel = triangulo.getNivel();
-        if(numero == 0){ // Primera esquina
+        if(numero == 0){                            // Primera esquina
             this.esquina1(triangulo);
         }
 
-        else if(numero < Math.pow(2,(nivel-1))){ // Primera arista
+        else if(numero < (int)((Math.pow(3, (nivel - 1))- 1)/ 2)){ // Primera arista
             this.arista1(triangulo);
         }
 
-        else if(numero == Math.pow(2,(nivel-1))){ // Apice
+        else if(numero == (int)((Math.pow(3, (nivel - 1))- 1)/ 2)){ // Apice
             this.apice(triangulo);
         }
 
-        else if(numero < Math.pow(2,(nivel-1))){ // Segunda arista
+        else if(numero < (int)(Math.pow(3, (nivel - 1))- 1)){ // Segunda arista
             this.arista2(triangulo);
         }
 
-        else if(numero == (Math.pow(2,(nivel))-1)){ // Segunda esquina
+        else if(numero == (int)(Math.pow(3, (nivel - 1))- 1)){ // Segunda esquina
             this.esquina2(triangulo);
         }
 
@@ -103,7 +103,7 @@ public class Sierpinski {
     
     // TIPOS DE CONEXIONES ------------------------------------------------
     public void esquina1(Triangulo esquina1_actual){
-        Triangulo esquina1_anterior = this.trianguloBusqueda(esquina1_actual.getNivel()-1, 0);
+        Triangulo esquina1_anterior = this.busquedaTriangulo(esquina1_actual.getNivel() - 1, 0);
 
         // Nunca cambian.
         esquina1_actual.getTercero().setSiguienteTriangulo(this.tail.getPrimero());
@@ -114,7 +114,7 @@ public class Sierpinski {
     }
     
     public void apice(Triangulo apice_actual){
-        Triangulo apice_anterior = this.trianguloBusqueda(apice_actual.getNivel() - 1, (int) Math.pow(2, apice_actual.getNivel() - 2));
+        Triangulo apice_anterior = this.busquedaTriangulo(apice_actual.getNivel() - 1, (int)((Math.pow(3, (apice_actual.getNivel() - 2))- 1)/ 2));
 
         // Nunca cambian
         apice_actual.getPrimero().setSiguienteTriangulo(this.tail.getSegundo());
@@ -125,38 +125,40 @@ public class Sierpinski {
     }
 
     public void esquina2(Triangulo esquina2_actual){
-        Triangulo esquina2_anterior = this.trianguloBusqueda(esquina2_actual.getNivel() - 1, (int) (Math.pow(2, (esquina2_actual.getNivel() - 1)) - 1));
+        Triangulo esquina2_anterior = this.busquedaTriangulo(esquina2_actual.getNivel() - 1, (int)(Math.pow(3, (esquina2_actual.getNivel() - 2))- 1));
 
         // Nunca cambian
         esquina2_actual.getSegundo().setSiguienteTriangulo(this.tail.getTercero());
-        this.tail.getTercero().setSiguienteTriangulo(esquina2_actual.getSegundo());
+        this.tail.getTercero().setSiguienteTriangulo(esquina2_actual.getTercero());
 
-        esquina2_anterior.getSegundo().setSiguienteTriangulo(esquina2_actual.getPrimero());
-        esquina2_actual.getSegundo().setSiguienteTriangulo(esquina2_anterior.getSegundo());
+        esquina2_anterior.getSegundo().setSiguienteTriangulo(esquina2_actual.getSegundo());
+        esquina2_actual.getTercero().setSiguienteTriangulo(esquina2_anterior.getTercero());
     }
 
+    // HOLA ------
     public void arista1(Triangulo triangulo_actual){
-        Triangulo triangulo_anterior = this.trianguloBusqueda(0, 0);
-        Triangulo triangulo_siguiente = this.trianguloBusqueda(0, 0);
+        // this.busquedaTriangulo(triangulo_actual.getNivel(), triangulo_actual.getNumero() - 1) Arreglar esto
+        Vertice vertice_triangulo_anterior = this.head.getPrimero().getSiguienteTriangulo();
 
-        triangulo_anterior.getPrimero().setSiguienteTriangulo(triangulo_actual.getPrimero());
-        triangulo_actual.getPrimero().setSiguienteTriangulo(triangulo_siguiente.getPrimero());
+        triangulo_actual.getPrimero().setSiguienteTriangulo(vertice_triangulo_anterior.getSiguienteTriangulo());
+        vertice_triangulo_anterior.setSiguienteTriangulo(triangulo_actual.getPrimero());
+        
     }
 
     public void arista2(Triangulo triangulo_actual){
-        Triangulo triangulo_anterior = this.trianguloBusqueda(0, 0);
-        Triangulo triangulo_siguiente = this.trianguloBusqueda(0, 0);
+        Vertice vertice_triangulo_anterior = this.head.getSegundo().getSiguienteTriangulo();
 
-        triangulo_anterior.getSegundo().setSiguienteTriangulo(triangulo_actual.getSegundo());
-        triangulo_actual.getSegundo().setSiguienteTriangulo(triangulo_siguiente.getSegundo());
+        triangulo_actual.getSegundo().setSiguienteTriangulo(vertice_triangulo_anterior.getSiguienteTriangulo());
+        vertice_triangulo_anterior.setSiguienteTriangulo(triangulo_actual.getSegundo());
+        
     }
 
     public void base(Triangulo triangulo_actual){
-        Triangulo triangulo_anterior = this.trianguloBusqueda(0, 0);
-        Triangulo triangulo_siguiente = this.trianguloBusqueda(0, 0);
+        Vertice vertice_triangulo_anterior = this.head.getTercero().getSiguienteTriangulo();
 
-        triangulo_anterior.getTercero().setSiguienteTriangulo(triangulo_actual.getTercero());
-        triangulo_actual.getTercero().setSiguienteTriangulo(triangulo_siguiente.getTercero());
+        triangulo_actual.getTercero().setSiguienteTriangulo(vertice_triangulo_anterior.getSiguienteTriangulo());
+        vertice_triangulo_anterior.setSiguienteTriangulo(triangulo_actual.getTercero());
+        
     }
 
     // INSERTAR VERTICE---------------------------------------------------------------------------
@@ -168,29 +170,25 @@ public class Sierpinski {
                 if(triangulo_actual.getSegundo().getValor() == 0){
                     triangulo_actual.getSegundo().setValor(valor);
                     op = false;
-                    break;
                 }
                 else{
                     triangulo_actual.getTercero().setValor(valor);
                     op = false;
-                    break;
                 }
             }   
-
-            if(triangulo_actual.getSiguiente() != null){
+            else if(triangulo_actual != this.head){
                 triangulo_actual = triangulo_actual.getSiguiente();
             }
             else{
                 // Si todos los triangulos estan llenos se crea uno nuevo.
                 this.insertarTriangulo(valor);
                 op = false;
-                break;  
             } 
         }
     }
 
     // BUSQUEDA ------------------------------------------------------------------------------
-    public Triangulo trianguloBusqueda(int nivel, int numero){
+    public Triangulo busquedaTriangulo(int nivel, int numero){
         Triangulo triangulo_actual = this.tail;
         while(triangulo_actual.getSiguiente() != null){
             if((triangulo_actual.getNivel() == nivel) && (triangulo_actual.getNumero() == numero)){
@@ -202,19 +200,22 @@ public class Sierpinski {
         return this.head;       
         }
 
-    public Vertice verticeBusqueda(int valor){
-        Vertice triangulo_actual = this.tail.getPrimero();
-        Vertice vertice_actual =  triangulo_actual;
+    public Vertice busquedaVertice(int valor){
+        Vertice triangulo_primer_vertice = this.tail.getPrimero();
+        Vertice vertice_actual = null;
         boolean op = true;
         while(op == true){
+            vertice_actual = triangulo_primer_vertice;
+            System.out.printf("Primero: %d \n",triangulo_primer_vertice.getValor());
             for (int i = 0; i <= 3; i++){
                 if(vertice_actual.getValor() == valor){
                     return vertice_actual;
                 }
+                System.out.printf("Vertice: %d, Valor: %d \n", i%3, vertice_actual.getValor());
                 vertice_actual = vertice_actual.getSiguienteVertice();
             }  
-            if(triangulo_actual.getSiguienteTriangulo() != null){
-                triangulo_actual = triangulo_actual.getSiguienteTriangulo();
+            if(triangulo_primer_vertice.getSiguienteTriangulo() != this.tail.getPrimero()){
+                triangulo_primer_vertice = triangulo_primer_vertice.getSiguienteTriangulo();
             }
             else{
                 op = false;  
@@ -229,15 +230,37 @@ public class Sierpinski {
         Triangulo triangulo_actual = this.tail;
         boolean op = true;
         while(op == true){
-            System.out.printf("Nivel: %d, Numero: %d, Primero: %d, Segundo: %d, tercero: %d,\n",
-            triangulo_actual.getNivel(), triangulo_actual.getNumero(), triangulo_actual.getPrimero().getValor(),  
-            triangulo_actual.getSegundo().getValor(), triangulo_actual.getTercero().getValor());
-            if(triangulo_actual.getSiguiente() != null){
+            this.datosTriangulo(triangulo_actual);
+            if(triangulo_actual.getSiguiente() != this.tail){
                 triangulo_actual = triangulo_actual.getSiguiente();
             }
             else{
                 op = false;  
             } 
         }
+    }
+
+    // Muy por mientras
+    public void datosTriangulo(Triangulo triangulo){
+        System.out.printf("Nivel: %d, Numero: %d. \n" + 
+                        "Primero: %d, Primero siguiente vertice: %d. \n" + 
+                        "Segundo: %d, Segundo siguiente vertice: %d. \n" + 
+                        "Tercero: %d, Tercero siguiente vertice: %d. \n",
+        triangulo.getNivel(), triangulo.getNumero(), 
+        triangulo.getPrimero().getValor(), triangulo.getPrimero().getSiguienteVertice().getValor(), 
+        triangulo.getSegundo().getValor(), triangulo.getSegundo().getSiguienteVertice().getValor(),
+        triangulo.getTercero().getValor(), triangulo.getTercero().getSiguienteVertice().getValor());
+    }
+
+    public void datosTriangulo2(Triangulo triangulo){
+        System.out.printf("Nivel: %d, Numero: %d. \\n" + //
+                        "Primero: %d, Primero siguiente vertice: %d, Primero siguiente triangulo: %d. \\n" + //
+                        "Segundo: %d, Segundo siguiente vertice: %d, Segundo siguiente triangulo: %d. \\n" + //
+                        "Tercero: %d, Tercero siguiente vertice: %d, Tercero siguiente triangulo: %d \n",
+        triangulo.getNivel(), triangulo.getNumero(), 
+        triangulo.getPrimero().getValor(), triangulo.getPrimero().getSiguienteVertice().getValor(), 
+        //triangulo.getPrimero().getSiguienteTriangulo().getValor(), 
+        triangulo.getSegundo().getValor(), triangulo.getSegundo().getSiguienteVertice().getValor(),
+        triangulo.getTercero().getValor(), triangulo.getTercero().getSiguienteVertice().getValor());
     }
 }
