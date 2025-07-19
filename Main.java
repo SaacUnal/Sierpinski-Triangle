@@ -9,7 +9,7 @@ public class Main{
     */ 
     public static void main(String[] args){
         RandomGenerator numero_random = RandomGenerator.of("L64X128MixRandom");
-        Sierpinski sierpinski = new Sierpinski(8, 52, 12);
+        SierpinskiSimple sierpinski = new SierpinskiSimple(8, 52, 12);
         sierpinski.visualizar();
         System.out.println(' ');
 
