@@ -11,64 +11,108 @@ public class SierpinskiSimple {
         this.insertarVertice(valor_3);
     }
 
-    // INSERTAR TRIANGULO ----------------------------------------------------------------------------------------
+    // INSERTAR----------------------------------------------------------------------------------------
     public void insertarTriangulo(int valor){
         int datos[] = this.posibleTriangulo();
         int nivel = datos[0], numero = datos[1];
         TrianguloSimple triangulo_nuevo = new TrianguloSimple (nivel, numero, valor);
-        this.head.setSiguiente(triangulo_nuevo);
-        this.conexionesTriangulos(triangulo_nuevo);
-        this.head = triangulo_nuevo;
-        this.head.setSiguiente(this.tail);
+        // Cuando se inserta un triangulo que se habia eliminado.
+        if((this.head.getNivel() == nivel && this.head.getNumero() > numero)||(this.head.getNivel() > nivel)){
+            this.conexionesTriangulos(triangulo_nuevo);
+            TrianguloSimple triangulo_anterior = this.tail;
+            int datos_posibles[] = this.siguientePosibleTriangulo(triangulo_anterior.getNivel(), triangulo_anterior.getNumero());
+            boolean op = true;
+            while(op == true){
+                if((datos_posibles[0] == triangulo_nuevo.getNivel()) && (datos_posibles[1] == triangulo_nuevo.getNumero())){
+                    op = false;
+                }
+                else{
+                    triangulo_anterior = triangulo_anterior.getSiguiente();
+                    datos_posibles = this.siguientePosibleTriangulo(triangulo_anterior.getNivel(), triangulo_anterior.getNumero());
+                }
+            }
+            triangulo_nuevo.setSiguiente(triangulo_anterior.getSiguiente());
+            triangulo_anterior.setSiguiente(triangulo_nuevo);
+        }
+        else{
+            this.head.setSiguiente(triangulo_nuevo);
+            this.head = triangulo_nuevo;
+            this.head.setSiguiente(this.tail);
+            this.conexionesTriangulos(triangulo_nuevo);
+        }
+        
     }
 
     public int[] posibleTriangulo(){
-        // Se añade otro nivel si se alcanzo el limite
         TrianguloSimple triangulo_actual = this.tail;
-        while(triangulo_actual.getSiguiente() != tail){
-            if(triangulo_actual.getSiguiente() == null){
-                break;
+        int nivel_ultimo = triangulo_actual.getNivel();
+        int numero_ultimo = triangulo_actual.getNumero();
+
+        int datos[] = this.siguientePosibleTriangulo(nivel_ultimo, numero_ultimo);
+        int nivel_posible = datos[0];
+        int numero_posible = datos[1];
+
+        // Si hay un triangulo eliminado antes.
+        while(triangulo_actual != head){
+            if((triangulo_actual.getSiguiente().getNivel() != nivel_posible) || (triangulo_actual.getSiguiente().getNumero() != numero_posible)){
+                return datos;
             }
             else{
                 triangulo_actual = triangulo_actual.getSiguiente();
+                nivel_ultimo = triangulo_actual.getNivel();
+                numero_ultimo = triangulo_actual.getNumero();
             }
+            datos = this.siguientePosibleTriangulo(nivel_ultimo, numero_ultimo);
+            nivel_posible = datos[0];
+            numero_posible = datos[1];
         }
-        int nivel_ultimo = triangulo_actual.getNivel();
-        int numero_ultimo = triangulo_actual.getNumero();
-        if(((numero_ultimo + 1) < (int)Math.pow(3, nivel_ultimo - 1)) && (nivel_ultimo > 0)){
+        return datos;
+    }
+
+    public int[] siguientePosibleTriangulo(int nivel_ultimo, int numero_ultimo){
+        if(((numero_ultimo + 1) < (int)(Math.pow(3, nivel_ultimo - 1))) && (nivel_ultimo > 0)){
             int datos[] = {nivel_ultimo, numero_ultimo+1};
             return datos;
         }
+        // Se añade otro nivel si se alcanzo el limite.
         int datos[] = {nivel_ultimo + 1, 0};
         return datos; 
     }
 
     public void conexionesTriangulos(TrianguloSimple triangulo_nuevo){
-        TrianguloSimple triangulo_actual = this.tail.getSiguiente();
-        boolean op = true;
-        if((triangulo_actual.getNivel() == 0) || (triangulo_actual == triangulo_nuevo)){
-            op = false;
+        TrianguloSimple triangulo_anterior = this.tail.getSiguiente();
+        if((triangulo_anterior.getNivel() == 0) || (triangulo_anterior == triangulo_nuevo)){
+            return;
         }
-        while(op == true){
-            if(triangulo_actual.getIzquierda() == null){
-                triangulo_actual.setIzquierda(triangulo_nuevo);
-                op = false;
+        triangulo_anterior = this.busquedaTriangulo(((triangulo_nuevo.getNivel())- 1), (triangulo_nuevo.getNumero()/ 3));
+        // Si el triangulo ya habia sido creado.
+        if(triangulo_nuevo != this.head){
+            // Conexiones propias
+            triangulo_nuevo.setIzquierda(this.busquedaTriangulo((triangulo_nuevo.getNivel())+ 1, triangulo_nuevo.getNumero()* 3));
+            triangulo_nuevo.setArriba(this.busquedaTriangulo((triangulo_nuevo.getNivel())+ 1, (triangulo_nuevo.getNumero()* 3) + 1));
+            triangulo_nuevo.setDerecha(this.busquedaTriangulo((triangulo_nuevo.getNivel())+ 1, (triangulo_nuevo.getNumero()* 3) + 2));
+            switch (triangulo_nuevo.getNumero() % 3) {
+                case 0: triangulo_anterior.setIzquierda(triangulo_nuevo);
+                break;
+                case 1: triangulo_anterior.setArriba(triangulo_nuevo);
+                break;
+                case 2: triangulo_anterior.setDerecha(triangulo_nuevo);
+                break;
             }
-            else if(triangulo_actual.getArriba() == null){
-                triangulo_actual.setArriba(triangulo_nuevo);
-                op = false;
-            }
-            else if(triangulo_actual.getDerecha() == null){
-                triangulo_actual.setDerecha(triangulo_nuevo);
-                op = false;
-            }  
-            else{
-                triangulo_actual = triangulo_actual.getSiguiente();
-            }
+            return;
         }
+        
+        if(triangulo_anterior.getIzquierda() == null){
+            triangulo_anterior.setIzquierda(triangulo_nuevo);
+        }
+        else if(triangulo_anterior.getArriba() == null){
+            triangulo_anterior.setArriba(triangulo_nuevo);
+        }
+        else{
+            triangulo_anterior.setDerecha(triangulo_nuevo);
+        }   
     }
 
-    // INSERTAR VERTICE---------------------------------------------------------------------------
     public void insertarVertice(int valor){
         boolean op = true;
         TrianguloSimple triangulo_actual = this.tail;
@@ -94,24 +138,38 @@ public class SierpinskiSimple {
         }
     }
 
-    // ELIMINAR TRIANGULO -----------------------------------------------------------------------------------
+    // ELIMINAR -----------------------------------------------------------------------------------
     public void eliminarTriangulo(int nivel, int numero){
-        TrianguloSimple triangulo_a_eliminar = this.busquedaTriangulo(nivel, numero);
-        if(triangulo_a_eliminar != null){
-            // Elimina el triangulo y sus vertices.
-            triangulo_a_eliminar.setPrimero(new Vertice(0));
-            triangulo_a_eliminar.setSegundo(new Vertice(0));
-            triangulo_a_eliminar.setTercero(new Vertice(0));
-            // Elimina las conexiones con otros triangulos.
-            triangulo_a_eliminar.setIzquierda(null);
-            triangulo_a_eliminar.setArriba(null);
-            triangulo_a_eliminar.setDerecha(null);
-        } 
-        else {
-            System.out.println("El triangulo no existe.");
+        TrianguloSimple triangulo_eliminar = this.busquedaTriangulo(nivel, numero);
+        if(triangulo_eliminar == null){
+            System.out.println("El triangulo no se puede eliminar, no existe.");
+            return;
+        }
+        TrianguloSimple triangulo_anterior = null;
+        TrianguloSimple triangulo_actual = this.tail;
+        boolean op = true;
+        while(op == true){
+            if(triangulo_actual.getSiguiente() == triangulo_eliminar){
+                triangulo_anterior = triangulo_actual;
+                op = false;
+            }
+            else if(triangulo_actual.getSiguiente() != this.tail){
+                triangulo_actual = triangulo_actual.getSiguiente();
+            }
+            else{
+                op = false;  
+            } 
         }
 
-        
+        if(triangulo_eliminar == this.tail){
+            System.out.println("La base no se puede eliminar.");
+        }
+        else if(triangulo_eliminar != null){
+            // Arreglar las conexiones.
+            triangulo_anterior.setSiguiente(triangulo_eliminar.getSiguiente());
+
+            triangulo_eliminar = null;
+        }   
     }
 
     public void eliminarVertice(int valor){
@@ -120,21 +178,27 @@ public class SierpinskiSimple {
             vertice_a_eliminar.setValor(0);
         } 
         else {
-            System.out.println("El vertice no existe.");
+            System.out.println("El vertice no se puede eliminar, no existe.");
         }
     }
         
     // BUSQUEDA ------------------------------------------------------------------------------
     public TrianguloSimple busquedaTriangulo(int nivel, int numero){
         TrianguloSimple triangulo_actual = this.tail;
-        while(triangulo_actual.getSiguiente() != null){
+        if(nivel == 0 && numero == 0){
+            return this.tail; 
+        }
+        else if(nivel == this.head.getNivel() && numero == this.head.getNumero()){
+            return this.head;
+        }
+        while(triangulo_actual.getSiguiente() != this.tail){
             if((triangulo_actual.getNivel() == nivel) && (triangulo_actual.getNumero() == numero)){
                 return triangulo_actual;
             }
             triangulo_actual = triangulo_actual.getSiguiente();
             }
-        System.out.println("No existe ese triangulo. ");
-        return this.head;       
+        System.out.println("El triangulo no existe. ");
+        return null;    
         }
 
     public Vertice busquedaVertice(int valor){
@@ -144,12 +208,10 @@ public class SierpinskiSimple {
         boolean op = true;
         while(op == true){
             vertice_actual = triangulo_actual.getPrimero();
-            System.out.printf("Primero: %d \n",vertice_actual.getValor());
             for (int i = 0; i <= 3; i++){
                 if(vertice_actual.getValor() == valor){
                     return vertice_actual;
                 }
-                System.out.printf("Vertice: %d, Valor: %d \n", i%3, vertice_actual.getValor());
                 vertice_actual = vertice_actual.getSiguienteVertice();
             }  
             if(triangulo_actual.getSiguiente() != this.tail){
@@ -159,7 +221,7 @@ public class SierpinskiSimple {
                 op = false;  
             } 
         }
-        System.out.println("No existe ese vertice. ");
+        System.out.println("El vertice no existe. ");
         return vertice_actual;  
     }
 
@@ -177,5 +239,6 @@ public class SierpinskiSimple {
             } 
         }
     }
+
 }   
 

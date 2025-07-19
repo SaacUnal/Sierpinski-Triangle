@@ -144,6 +144,33 @@ public class Sierpinski {
         vertice_triangulo_anterior.setSiguienteTriangulo(triangulo_actual.getPrimero());
         
     }
+    
+    public void esArista1(TrianguloSimple triangulo){
+        par_inicial = [0, 1];
+        secuencia_inicial = 2;
+        par = [];
+        secuencia = [];
+        if(nivel 2){
+            if(numero in par_inicial){
+            return true;
+        }
+        }
+        else if(nivel 3){
+            par[0] = par_inicial[1] + secuencia[0]
+            par[1] = par[0] + 1;
+        }
+        else if (nivel4){
+            par[0] = par[1] + secuencia[0];
+            par[1] = par[0] + 1;
+            if(numero in par){
+                return true;
+            }
+            par[0] = par[1] + secuencia[1];
+            par[1] = par[0] + 1;
+        }
+        }
+        
+    }
 
     public void arista2(Triangulo triangulo_actual){
         Vertice vertice_triangulo_anterior = this.head.getSegundo().getSiguienteTriangulo();
