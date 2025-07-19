@@ -24,9 +24,17 @@ public class SierpinskiSimple {
 
     public int[] posibleTriangulo(){
         // Se añade otro nivel si se alcanzo el limite
-        TrianguloSimple triangulo_ultimo = this.head;
-        int nivel_ultimo = triangulo_ultimo.getNivel();
-        int numero_ultimo = triangulo_ultimo.getNumero();
+        TrianguloSimple triangulo_actual = this.tail;
+        while(triangulo_actual.getSiguiente() != tail){
+            if(triangulo_actual.getSiguiente() == null){
+                break;
+            }
+            else{
+                triangulo_actual = triangulo_actual.getSiguiente();
+            }
+        }
+        int nivel_ultimo = triangulo_actual.getNivel();
+        int numero_ultimo = triangulo_actual.getNumero();
         if(((numero_ultimo + 1) < (int)Math.pow(3, nivel_ultimo - 1)) && (nivel_ultimo > 0)){
             int datos[] = {nivel_ultimo, numero_ultimo+1};
             return datos;
@@ -86,6 +94,36 @@ public class SierpinskiSimple {
         }
     }
 
+    // ELIMINAR TRIANGULO -----------------------------------------------------------------------------------
+    public void eliminarTriangulo(int nivel, int numero){
+        TrianguloSimple triangulo_a_eliminar = this.busquedaTriangulo(nivel, numero);
+        if(triangulo_a_eliminar != null){
+            // Elimina el triangulo y sus vertices.
+            triangulo_a_eliminar.setPrimero(new Vertice(0));
+            triangulo_a_eliminar.setSegundo(new Vertice(0));
+            triangulo_a_eliminar.setTercero(new Vertice(0));
+            // Elimina las conexiones con otros triangulos.
+            triangulo_a_eliminar.setIzquierda(null);
+            triangulo_a_eliminar.setArriba(null);
+            triangulo_a_eliminar.setDerecha(null);
+        } 
+        else {
+            System.out.println("El triangulo no existe.");
+        }
+
+        
+    }
+
+    public void eliminarVertice(int valor){
+        Vertice vertice_a_eliminar = this.busquedaVertice(valor);
+        if(vertice_a_eliminar != null){
+            vertice_a_eliminar.setValor(0);
+        } 
+        else {
+            System.out.println("El vertice no existe.");
+        }
+    }
+        
     // BUSQUEDA ------------------------------------------------------------------------------
     public TrianguloSimple busquedaTriangulo(int nivel, int numero){
         TrianguloSimple triangulo_actual = this.tail;
