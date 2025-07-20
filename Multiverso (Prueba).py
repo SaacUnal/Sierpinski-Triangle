@@ -107,7 +107,7 @@ def draw_sierpinski_comp(ax, x, y, size, depth, triangulos, idx_tracker):
                         ax.annotate("", xy=dest, xytext=pos,
                                     arrowprops=dict(arrowstyle="->", color="green", lw=1))
 
-                # Conexiones de portal (rojo punteado)
+                # Conexiones de universos (rojo punteado)
                 if vert.siguiente_p:
                     ax.annotate("", xy=(pos[0], pos[1] - 0.02), xytext=(pos[0], pos[1] - 0.1),
                                 arrowprops=dict(arrowstyle="->", color="red", lw=1, linestyle="dotted"))
